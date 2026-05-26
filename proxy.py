@@ -10,7 +10,7 @@ load_dotenv()
 
 # -- LOG PRINT
 def log(info: str) -> None:
-    print(f'[{datetime.now().strftime("%d/%M/%YT%H:%M:%S")}] {info}')
+    print(f'[{datetime.now().strftime("%d/%M/%Y %H:%M:%S")}] {info}')
     return None
 
 class Proxy:
@@ -25,15 +25,16 @@ class Proxy:
             self.WORDS_FILTER: dict[str, str] = json.load(words)
 
         self._logfile_lock = threading.Lock()
-        self._logfile = open(os.getenv("LOGFILE", "log.wplog"), "a")
 
         with self._logfile_lock:
-            if self._logfile.tell() == 0: # Caso não contenha nada ou não exista
-                self._logfile.write('TIME HOST ACCESS METHOD IP')
+            with open(os.getenv("LOGFILE", "log.wplog"), "a") as log:
+                if log.tell() == 0: # Caso não contenha nada ou não exista
+                    log.write('TIME HOST ACCESS METHOD IP')
 
     def _add_log(self, site: str, access: str, method: str, ip: str) -> None:
         with self._logfile_lock:
-            self._logfile.write(f'\n[{datetime.now().strftime("%d-%M-%Y %H:%M:%S")}] {site} {access} {method} {ip}')
+            with open(os.getenv("LOGFILE", "log.wplog"), "a") as log:
+                log.write(f'\n[{datetime.now().strftime("%d-%M-%Y %H:%M:%S")}] {site} {access} {method} {ip}')
 
     @staticmethod
     def _bridge(sender: socket.socket, receiver: socket.socket) -> None:
@@ -115,7 +116,7 @@ class Proxy:
     def response(self, host: str, port: int, raw_request: bytes, client_conn: socket.socket, **kwargs) -> None:
         """Handle methods GET | POST | PUT | DELETE | PATCH"""
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
-            # log(f'Connected in {host}:{port}\nRaw Request: {raw_request.decode()}')
+            log(f'Connected in {host}:{port}\nRaw Request: {raw_request.decode()}')
             server.connect((host, port))
             server.sendall(raw_request)
 
@@ -219,7 +220,7 @@ if __name__ == '__main__':
             s.bind((proxy.HOST, proxy.PORT))
             s.listen()
 
-            log(f'Proxy incializado em {proxy.HOST}:{proxy.PORT}\n\n')
+            log(f'Proxy incializado em {proxy.HOST}:{proxy.PORT}\n')
             while True:
                 conn, addr = s.accept()
                 t = threading.Thread(target=proxy.handle_connection, args=(conn, addr), daemon=True)
