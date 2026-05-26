@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acesso Bloqueado</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;500&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --border: #22222e;
+      --text: #d8d8e8;
+      --muted: #55556a;
+      --accent: #7c6dfa;
+      --accent-dim: rgba(124, 109, 250, .12);
+      --mono: 'IBM Plex Mono', monospace;
+      --sans: 'IBM Plex Sans', sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 560px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      animation: fadein .4s ease;
+    }
+
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-header {
+      border-bottom: 1px solid var(--border);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: var(--accent-dim);
+    }
+
+    .shield {
+      width: 18px; height: 20px;
+      flex-shrink: 0;
+    }
+
+    .card-header span {
+      font-family: var(--mono);
+      font-size: .75rem;
+      color: var(--accent);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .card-body { padding: 2rem 1.5rem; }
+
+    .code {
+      font-family: var(--mono);
+      font-size: 3.5rem;
+      font-weight: 600;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: .5rem;
+    }
+
+    .title {
+      font-weight: 300;
+      font-size: 1.1rem;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 1.5rem 0;
+    }
+
+    .meta {
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+    }
+
+    .meta-row {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: .5rem;
+      align-items: start;
+    }
+
+    .meta-label {
+      font-family: var(--mono);
+      font-size: .68rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      padding-top: .05rem;
+    }
+
+    .meta-value {
+      font-family: var(--mono);
+      font-size: .8rem;
+      color: var(--text);
+      word-break: break-all;
+    }
+
+    .meta-value.highlight {
+      color: var(--accent);
+    }
+
+    .card-footer {
+      border-top: 1px solid var(--border);
+      padding: 1rem 1.5rem;
+      font-size: .75rem;
+      color: var(--muted);
+      font-family: var(--mono);
+      background: var(--accent-dim);
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="card-header">
+      <svg class="shield" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9 1L1 4.5V9.5C1 14.25 4.5 18.5 9 19.5C13.5 18.5 17 14.25 17 9.5V4.5L9 1Z" stroke="#7c6dfa" stroke-width="1.4" fill="none"/>
+        <path d="M6 9.5L8 11.5L12 7.5" stroke="#7c6dfa" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Acesso negado</span>
+    </div>
+    <div class="card-body">
+      <div class="code">403</div>
+      <div class="title">Este recurso está bloqueado e não pode ser acessado.</div>
+      <hr class="divider">
+      <div class="meta">
+        <div class="meta-row">
+          <span class="meta-label">URL</span>
+          <span class="meta-value">{{ url }}</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">IP</span>
+          <span class="meta-value highlight">{{ ip }}</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">Timestamp</span>
+          <span class="meta-value">{{ timestamp }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      Este acesso foi registrado. Entre em contato com o administrador caso necessite de permissão.
+    </div>
+  </div>
+</body>
+</html>
