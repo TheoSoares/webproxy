@@ -4,17 +4,21 @@ O SLSProxy é um servidor proxy web desenvolvido como projeto para a disciplina 
 
 ## Funcionalidades
 
-***Suporte a HTTPS (HTTP Connect):** Possui suporte ao HTTP Connect, método utilizado pelo HTTPS. O proxy atua como uma ponte, ele abre uma conexão com o servidor, avisa o cliente que a conexão foi estabelecida (`HTTP/1.1 200 Connection Established`), e eles começam a trocar dados.
-***Filtragem de Conteúdo HTML:** Possui implementação para filtragem de conteúdo HTML. O proxy recebe os dados enviados pelo servidor, aplica o filtro de palavras em arquivos HTML apenas e retorna os dados.
-***Bloqueio de Domínios (HOSTs):** O proxy verifica se o domínio ou algum subdomínio está presente no arquivo `blocked.json`, arquivo este que gerencia todos os domínios bloqueados pelo proxy. Caso presente, o proxy retorna uma página de erro 403 para o cliente e encerra sua conexão.
+**Suporte a HTTPS (HTTP Connect):** Possui suporte ao HTTP Connect, método utilizado pelo HTTPS. O proxy atua como uma ponte, ele abre uma conexão com o servidor, avisa o cliente que a conexão foi estabelecida (`HTTP/1.1 200 Connection Established`), e eles começam a trocar dados.
+
+**Filtragem de Conteúdo HTML:** Possui implementação para filtragem de conteúdo HTML. O proxy recebe os dados enviados pelo servidor, aplica o filtro de palavras em arquivos HTML apenas e retorna os dados.
+
+**Bloqueio de Domínios (HOSTs):** O proxy verifica se o domínio ou algum subdomínio está presente no arquivo `blocked.json`, arquivo este que gerencia todos os domínios bloqueados pelo proxy. Caso presente, o proxy retorna uma página de erro 403 para o cliente e encerra sua conexão.
 
 ## Arquitetura e Tecnologia
 
 O SLSProxy foi desenvolvido utilizando Sockets na linguagem Python. 
 
 ### Fluxos de Comunicação
-***Arquitetura Cíclica (HTTP Convencional):** Para o restante dos métodos (GET, POST, PUT, DELETE, PATCH), o proxy recebe os dados do cliente e repassa ao servidor. O proxy modifica o header para remover a chave `Content-Length` e altera a chave `Connection` de `Keep-Alive` para `closed` quando possível, para que o cliente não fique carregando infinitamente a página esperando o final da requisição.
-***Passthrough Sequencial (HTTP Connect):** O proxy recebe os dados enviados pelo cliente e repassa ao servidor ao mesmo tempo que recebe os dados do servidor e repassa para o cliente. Por conta do conteúdo criptografado, não é possível modificar os dados antes de repassar.
+
+**Arquitetura Cíclica (HTTP Convencional):** Para o restante dos métodos (GET, POST, PUT, DELETE, PATCH), o proxy recebe os dados do cliente e repassa ao servidor. O proxy modifica o header para remover a chave `Content-Length` e altera a chave `Connection` de `Keep-Alive` para `closed` quando possível, para que o cliente não fique carregando infinitamente a página esperando o final da requisição.
+
+**Passthrough Sequencial (HTTP Connect):** O proxy recebe os dados enviados pelo cliente e repassa ao servidor ao mesmo tempo que recebe os dados do servidor e repassa para o cliente. Por conta do conteúdo criptografado, não é possível modificar os dados antes de repassar.
 
 ## Estrutura do Repositório
 
