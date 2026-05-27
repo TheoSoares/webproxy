@@ -228,10 +228,8 @@ if __name__ == '__main__':
 
     except KeyboardInterrupt:
         log("O proxy foi desligado com sucesso. Remova ou desligue-o dos navegadores.")
-        proxy._logfile.close()
         exit(0)
 
     except Exception as e:
         log(f'Erro: {e}')
-        proxy._logfile.close()
         exit(1)
