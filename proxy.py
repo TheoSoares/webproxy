@@ -8,6 +8,18 @@ from datetime import datetime
 
 load_dotenv()
 
+# -- GET IP
+def ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        s.connect(('8.8.8.8', 1))
+        ip_local = s.getsockname()[0]
+    except Exception:
+        ip_local = '127.0.0.1'  # Retorna localhost caso esteja sem rede
+    finally:
+        s.close()
+    return ip_local
+
 # -- LOG PRINT
 def log(info: str) -> None:
     print(f'[{datetime.now().strftime("%d/%M/%Y %H:%M:%S")}] {info}')
@@ -220,7 +232,7 @@ if __name__ == '__main__':
             s.bind((proxy.HOST, proxy.PORT))
             s.listen()
 
-            log(f'Proxy incializado em {proxy.HOST}:{proxy.PORT}\n')
+            log(f'Proxy incializado em {ip()}:{proxy.PORT}\n')
             while True:
                 conn, addr = s.accept()
                 t = threading.Thread(target=proxy.handle_connection, args=(conn, addr), daemon=True)
