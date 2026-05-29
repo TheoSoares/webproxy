@@ -69,6 +69,8 @@ class Proxy:
             server.connect((host, port))
             client_conn.sendall(f'{protocol} 200 Connection Established\r\n\r\n'.encode())
             log(f'Connected! Client <-> {host}')
+            self._add_log(f'{host}{":" + str(port) if port != 443 else ""}{kwargs['page']}', 'CONNECTED', kwargs['method'], str(kwargs['addr'][0]))
+
 
             client_thread = threading.Thread(target=self._bridge, args=(client_conn, server), daemon=True)
             server_thread = threading.Thread(target=self._bridge, args=(server, client_conn), daemon=True)
